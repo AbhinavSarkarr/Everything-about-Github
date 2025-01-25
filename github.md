@@ -221,3 +221,98 @@ This will clean up both your local and remote repositories.
 
 ---
 
+### **Problem:**
+
+You have created a branch named `bug`, made changes, staged, and committed them. However, while you were working on `bug`, new commits were added to the `main` branch. Now, you want to rebase your `bug` branch onto the latest `main` branch and merge it both locally and remotely.
+
+---
+
+### **Solution:**
+
+To rebase your `bug` branch onto the latest `main` branch and merge it into `main`, follow these steps:
+
+---
+
+1. **Switch to the `bug` branch:**
+
+   ```bash
+   git checkout bug
+   ```
+
+2. **Rebase the `bug` branch onto the latest `main` branch:**
+
+   - First, fetch the latest changes from the remote repository:
+
+     ```bash
+     git fetch origin
+     ```
+
+   - Then rebase the `bug` branch onto the latest `main` branch:
+
+     ```bash
+     git rebase origin/main
+     ```
+
+   - If there are conflicts during the rebase, Git will pause and mark the conflicting files. Resolve the conflicts manually and stage the resolved files:
+
+     ```bash
+     git add <resolved-file>
+     ```
+
+   - Continue the rebase process after resolving conflicts:
+
+     ```bash
+     git rebase --continue
+     ```
+
+   - If you decide to abort the rebase process for any reason:
+
+     ```bash
+     git rebase --abort
+     ```
+
+3. **Switch to the `main` branch:**
+
+   ```bash
+   git checkout main
+   ```
+
+4. **Pull the latest changes from the remote repository into `main`:**
+
+   ```bash
+   git pull origin main
+   ```
+
+5. **Merge the `bug` branch into `main`:**
+
+   - Since the `bug` branch is now rebased onto `main`, the merge will be fast-forward:
+
+     ```bash
+     git merge bug
+     ```
+
+6. **Push the updated `main` branch to the remote repository:**
+
+   ```bash
+   git push origin main
+   ```
+
+7. **Clean up the `bug` branch (if no longer needed):**
+
+   - Delete the local `bug` branch:
+
+     ```bash
+     git branch -d bug
+     ```
+
+   - Optionally, delete the remote `bug` branch:
+
+     ```bash
+     git push origin --delete bug
+     ```
+
+---
+
+### **Summary:**
+
+Using the rebase method, you ensure that your `bug` branch integrates cleanly with the latest `main` branch, preserving a linear commit history. This approach is particularly useful in collaborative projects where a clean commit history is desired. Always communicate with your team before rebasing shared branches, as it rewrites commit history.
